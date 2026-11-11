@@ -2,6 +2,24 @@
 
 OpenCode Desktop GUI 插件：在会话里显示模型价格。
 
+仓库：<https://github.com/jqming123/opencode-model-prices>
+
+## 安装
+
+```powershell
+git clone https://github.com/jqming123/opencode-model-prices.git "$env:USERPROFILE\.config\opencode\opencode-model-prices"
+```
+
+然后在 `~/.config/opencode/opencode.jsonc` 里注册（路径与克隆目录名一致）：
+
+```jsonc
+{
+  "plugins": ["./opencode-model-prices"],
+}
+```
+
+插件 id 仍是 `model-prices`（来自 `package.json`），与仓库名、目录名无关。
+
 ## 功能
 
 - 会话侧边栏面板 **Model prices**：列出当前项目可用模型，显示上下文窗口、输入 / 输出 / 缓存读写单价（USD / 1M tokens），支持搜索、按输入价 / 输出价 / 名称排序，并可切换正序 / 倒序；点击行直接切换模型。
@@ -45,13 +63,14 @@ npm run build
 
 ## Git 仓库
 
-本目录是一个独立的 Git 仓库，默认分支为 `main`，`node_modules/` 已被忽略。
+本目录是一个独立的 Git 仓库，默认分支为 `main`，`node_modules/` 已被忽略。远程 `origin` 已指向 <https://github.com/jqming123/opencode-model-prices>。
 
-添加远程仓库并推送：
+修改后推送：
 
 ```bash
-git remote add origin <repo-url>
-git push -u origin main
+git add .
+git commit -m "Update model prices panel"
+git push
 ```
 
 GUI 插件 API 目前标记为 experimental，桌面端升级后如果布局或接口有变化，可能需要跟着调整。
