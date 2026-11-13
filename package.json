@@ -8,7 +8,7 @@
     "./gui-experimental": "./dist/gui-experimental.cjs"
   },
   "scripts": {
-    "build": "vite build",
+    "bundle": "vite build",
     "watch": "vite build --watch"
   },
   "devDependencies": {

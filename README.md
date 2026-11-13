@@ -4,21 +4,57 @@ OpenCode Desktop GUI 插件：在会话里显示模型价格。
 
 仓库：<https://github.com/jqming123/opencode-model-prices>
 
+需要支持 `./gui-experimental` 的 OpenCode Desktop 2.x。
+
 ## 安装
 
-```powershell
-git clone https://github.com/jqming123/opencode-model-prices.git "$env:USERPROFILE\.config\opencode\opencode-model-prices"
+推荐用 Git 直装。
+
+```bash
+opencode plugin add git+https://github.com/jqming123/opencode-model-prices.git
 ```
 
-然后在 `~/.config/opencode/opencode.jsonc` 里注册（路径与克隆目录名一致）：
+也可以在全局 `~/.config/opencode/opencode.jsonc` 的 `plugins` 里手动添加：
 
 ```jsonc
 {
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": ["git+https://github.com/jqming123/opencode-model-prices.git"],
+}
+```
+
+数组里已有其他插件就追加一项，不要覆盖原来的配置。
+
+安装后运行 `opencode plugin list` 确认，应该能看到 `model-prices`。仓库里已经带了构建好的 `dist/gui-experimental.cjs`，Git 安装不需要本地构建。
+
+## 本地开发
+
+要改源码，把仓库克隆到 OpenCode 配置目录，然后在 `plugins` 里写本地路径：
+
+```bash
+git clone https://github.com/jqming123/opencode-model-prices.git ~/.config/opencode/opencode-model-prices
+```
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
   "plugins": ["./opencode-model-prices"],
 }
 ```
 
-插件 id 仍是 `model-prices`（来自 `package.json`），与仓库名、目录名无关。
+插件 id 来自 `package.json`，固定为 `model-prices`，与仓库名、克隆目录名无关。
+
+改完 `src/gui.tsx` 后重新构建：
+
+```bash
+cd ~/.config/opencode/opencode-model-prices
+npm install
+npm run bundle
+```
+
+开发时可以用 `npm run watch` 持续构建。
+
+`dist/gui-experimental.cjs` 已纳入版本控制，克隆后无需先构建即可被 OpenCode 直接加载。修改源码后需要重新构建，并把 `src/` 和 `dist/` 一起提交。
 
 ## 功能
 
@@ -29,13 +65,13 @@ git clone https://github.com/jqming123/opencode-model-prices.git "$env:USERPROFI
 
 ## 入口
 
-- 打开方式：会话侧栏 **+** 菜单 → **Model prices**；或 `Ctrl+P` → `Model prices`；或输入 `/prices`。
+- 打开方式：会话侧栏 **+** 菜单 → **Model prices**；或 `Ctrl+P` → **Model prices**；或输入 `/prices`。
 - 插件开关：Desktop **Settings > Extensions > Plugins**。
 
 ## 目录
 
 ```text
-~/.config/opencode/model-prices/
+~/.config/opencode/opencode-model-prices/
 ├── server.js               # 最小服务端入口，让插件被 OpenCode 识别为 active
 ├── src/gui.tsx             # GUI 插件源码
 ├── vite.config.ts
@@ -43,27 +79,17 @@ git clone https://github.com/jqming123/opencode-model-prices.git "$env:USERPROFI
 └── package.json            # exports ./gui-experimental
 ```
 
-配置在 `~/.config/opencode/opencode.jsonc`：
-
-```jsonc
-{
-  "plugins": ["./model-prices"],
-}
-```
-
-## 修改后重新构建
+## 构建
 
 ```bash
-cd ~/.config/opencode/model-prices
-npm install   # 新克隆的环境先安装依赖
-npm run build
+cd ~/.config/opencode/opencode-model-prices
+npm install
+npm run bundle
 ```
-
-`dist/gui-experimental.cjs` 已纳入版本控制，克隆后无需先构建即可被 OpenCode 直接加载。修改 `src/gui.tsx` 后需要重新构建，并把 `src/` 和 `dist/` 一起提交。
 
 ## Git 仓库
 
-本目录是一个独立的 Git 仓库，默认分支为 `main`，`node_modules/` 已被忽略。远程 `origin` 已指向 <https://github.com/jqming123/opencode-model-prices>。
+本目录是一个独立的 Git 仓库，默认分支为 `main`，`node_modules/` 已被忽略。远程 `origin` 指向 <https://github.com/jqming123/opencode-model-prices>。
 
 修改后推送：
 
